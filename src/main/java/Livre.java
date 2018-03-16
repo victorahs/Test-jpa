@@ -1,18 +1,45 @@
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "livre")
 public class Livre {
+	/** Getter
+	 * @return the emprunts
+	 */
+	public List<Emprunt> getEmprunts() {
+		return emprunts;
+	}
+
+	/**Setter
+	 * @param emprunts the emprunts to set
+	 */
+	public void setEmprunts(List<Emprunt> emprunts) {
+		this.emprunts = emprunts;
+	}
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "TITRE")
 	private String titre;
 	@Column(name = "AUTEUR")
 	private String auteur;
+
+	@ManyToMany
+	@JoinTable(name = "compo", joinColumns = @JoinColumn(name = "ID_LIV", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_EMP", referencedColumnName = "ID"))
+
+	private List<Emprunt> emprunts;
 
 	/**
 	 * Getter
@@ -23,7 +50,9 @@ public class Livre {
 		return titre;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
